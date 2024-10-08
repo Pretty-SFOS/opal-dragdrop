@@ -3,20 +3,6 @@ SPDX-FileCopyrightText: 2023-2024 Mirian Margiani
 SPDX-License-Identifier: GFDL-1.3-or-later
 -->
 
-# Template for new Opal modules
-
-Copy this repository to setup a new Opal module.
-
-1. Create a local copy of the contents of this repository.
-2. Run `setup.sh` and follow the instructions.
-3. Import your source code to `Opal/DragDrop/` and write documentation.
-4. Add an example to `README.md`.
-5. Update `release-module.sh`: if your module has no translations, set `cTRANSLATE=(Opal)` to `cTRANSLATE=()`
-5. Remove this introduction from `README.md`.
-6. Run `./release-module.sh` to build docs and create a release bundle.
-
-<hr>
-
 # DragDrop
 
 QML module for ordering lists by drag-and-drop in Sailfish apps
@@ -24,7 +10,14 @@ QML module for ordering lists by drag-and-drop in Sailfish apps
 This module enables ordering lists by drag-and-drop with just a few lines of code.
 
 
+## Status
+
+The module works fine but documentation and screenshots are still missing.
+
+
 ## Usage
+
+TODO
 
 ```{qml}
 import QtQuick 2.0

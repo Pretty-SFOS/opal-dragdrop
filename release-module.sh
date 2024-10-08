@@ -42,7 +42,7 @@ parse_arguments "$@"
 # Define in cTRANSLATE which files and directories must be scanned for
 # translatable strings. Note: translations are built from the original sources,
 # independent of the files marked for distribution in copy_files.
-cTRANSLATE=(Opal)  # options: "Opal" and/or "src"
+cTRANSLATE=()  # options: "Opal" and/or "src"
 
 # Edit the copy_files() function if any additional copy steps are necessary. By
 # default, documentation is generated, and QML and C++ sources will be copied. It
@@ -55,6 +55,22 @@ cTRANSLATE=(Opal)  # options: "Opal" and/or "src"
 # will not be included in the tarball but will be used as source for translations.
 function copy_files() {
     build_qdoc to="$DOC_BASE"
+
+    # render icons
+    # shellcheck disable=SC2155
+    local back="$(pwd)"
+
+    if cd icon-src; then
+        ./render-icons.sh || {
+            log "failed to render icons, check the logs"
+            true
+        }
+    else
+        log "skipped rendering icons, could not find icon-src/ directory"
+    fi
+
+    cd "$back" || return 1
+
     [[ -d Opal ]] && { cp -r Opal --target-directory="$QML_BASE"    || return 1; } || true
     [[ -d src  ]] && { cp -r src  --no-target-directory "$SRC_BASE" || return 1; } || true
 }
