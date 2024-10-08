@@ -1,5 +1,5 @@
-//@ This file is part of opal-mymodule.
-//@ https://github.com/Pretty-SFOS/opal-mymodule
+//@ This file is part of opal-dragdrop.
+//@ https://github.com/Pretty-SFOS/opal-dragdrop
 //@ SPDX-FileCopyrightText: 2021-2024 Mirian Margiani
 //@ SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -11,7 +11,7 @@ import QtQuick 2.0
 
 Item {
     //@ commonly used strings
-    // readonly property string a: qsTranslate("Opal.MyModule.Common", "This is a sentence.")
-    // readonly property string b: qsTranslate("Opal.MyModule.Common", "Here are %n sentences.", "", 5)
-    // readonly property string c: qsTranslate("Opal.MyModule.Common", "My hands are typing words.")
+    // readonly property string a: qsTranslate("Opal.DragDrop.Common", "This is a sentence.")
+    // readonly property string b: qsTranslate("Opal.DragDrop.Common", "Here are %n sentences.", "", 5)
+    // readonly property string c: qsTranslate("Opal.DragDrop.Common", "My hands are typing words.")
 }

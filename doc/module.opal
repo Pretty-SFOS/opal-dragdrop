@@ -15,24 +15,24 @@ version: 1.0.0
 
 # plain name as used in the module repository URL, will be prefixed with "opal-"
 # where necessary
-name: mymodule
+name: dragdrop
 
 # styled name including capitalisation etc., will be prefixed with "Opal."
 # where necessary
-nameStyled: MyModule
+nameStyled: DragDrop
 
 # very short description of this module: must be plain text without formatting
 # and should be as short as possible. This text may be used as the description
 # of a Git repository, and is used in documentation.
-briefDescription: QML module for TODO in Sailfish apps
+briefDescription: QML module for ordering lists by drag-and-drop in Sailfish apps
 
 # description of this module: may use rich text and will be translated in
 # Opal Gallery. Line breaks can included with '\n' but should be avoided.
-description: This module provides TODO.
+description: This module enables ordering lists by drag-and-drop with just a few lines of code.
 
 # attribution string for the whole module, in the same form as a SPDX
 # FileCopyrightText entry.
-attribution: 2018-2024 Mirian Margiani
+attribution: 2024 Mirian Margiani
 
 # colon-separated list of this module's current maintainer(s)
 maintainers: Mirian Margiani
