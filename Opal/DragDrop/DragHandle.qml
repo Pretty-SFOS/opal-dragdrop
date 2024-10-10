@@ -11,6 +11,8 @@ SilicaItem {
     property DelegateDragHandler moveHandler
     property alias handleImage: image
     property bool showActiveArea: false // for debugging
+    property int verticalAlignment: Qt.AlignCenter
+    property int verticalPadding: Theme.paddingMedium
 
     visible: !!moveHandler && moveHandler.active
     implicitWidth: visible ? Theme.itemSizeMedium : 0
@@ -42,6 +44,50 @@ SilicaItem {
         width: Theme.iconSizeMedium
         height: width
         highlighted: root.highlighted || moveHandler.dragging || area.containsPress
+
+        states: [
+            State {
+                when: root.verticalAlignment === Qt.AlignTop
+                AnchorChanges {
+                    target: image
+                    anchors {
+                        top: parent.top
+                        verticalCenter: undefined
+                        bottom: undefined
+                    }
+                }
+                PropertyChanges {
+                    target: image
+                    anchors.topMargin: verticalPadding
+                }
+            },
+            State {
+                when: root.verticalAlignment === Qt.AlignVCenter
+                AnchorChanges {
+                    target: image
+                    anchors {
+                        top: undefined
+                        verticalCenter: parent.verticalCenter
+                        bottom: undefined
+                    }
+                }
+            },
+            State {
+                when: root.verticalAlignment === Qt.AlignBottom
+                AnchorChanges {
+                    target: image
+                    anchors {
+                        top: undefined
+                        verticalCenter: undefined
+                        bottom: parent.bottom
+                    }
+                }
+                PropertyChanges {
+                    target: image
+                    anchors.bottomMargin: verticalPadding
+                }
+            }
+        ]
     }
 
     // vvv DEBUG
