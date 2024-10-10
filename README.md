@@ -7,25 +7,130 @@ SPDX-License-Identifier: GFDL-1.3-or-later
 
 QML module for ordering lists by drag-and-drop in Sailfish apps
 
-This module enables ordering lists by drag-and-drop with just a few lines of code.
-
-
-## Status
-
-The module works fine but documentation and screenshots are still missing.
+This module enables ordering lists by drag-and-drop with just a few lines of
+code. Using this module saves you from writing a couple hundred lines of
+specialized code for each view that should support drag-and-drop.
 
 
 ## Usage
 
-TODO
+This module can be used with any custom view. It requires a model that supports
+moving elements.
+
+Basic usage with `Opal.Delegates` takes only five lines of code:
 
 ```{qml}
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Opal.Delegates 1.0
 import Opal.DragDrop 1.0
 
-MyComponent {
-    // ...
+Page {
+    id: root
+    allowedOrientations: Orientation.All
+
+    ListModel {
+        id: myModel
+        ListElement { name: "Jane" }
+        ListElement { name: "John" }
+        ListElement { name: "Judy" }
+    }
+
+    SilicaListView {
+        id: view
+        model: myModel
+        anchors.fill: parent
+        header: PageHeader { title: "People" }
+        VerticalScrollDecorator {}
+
+        ViewDragHandler {
+            id: viewDragHandler
+            listView: view
+        }
+
+        delegate: OneLineDelegate {
+            text: name
+            dragHandler: viewDragHandler
+        }
+    }
+}
+```
+
+
+Basic usage with a custom list delegate takes more code because you have to
+add the visual `DragHandle` manually and take care of styling. The drag-and-drop
+integration still takes less than 15 lines of code:
+
+```
+import QtQuick 2.0
+import Sailfish.Silica 1.0
+import Opal.Delegates 1.0
+import Opal.DragDrop 1.0
+
+Page {
+    id: root
+    allowedOrientations: Orientation.All
+
+    ListModel {
+        id: myModel
+        ListElement { name: "Jane" }
+        ListElement { name: "John" }
+        ListElement { name: "Judy" }
+    }
+
+    SilicaListView {
+        id: view
+        model: myModel
+        anchors.fill: parent
+        header: PageHeader { title: "People" }
+        VerticalScrollDecorator {}
+
+        ViewDragHandler {
+            id: viewDragHandler
+            listView: view
+        }
+
+        delegate: ListItem {
+            id: delegate
+            contentHeight: Theme.itemSizeSmall
+
+            Label {
+                text: name
+                truncationMode: TruncationMode.Fade
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                    leftMargin: Theme.horizontalPageMargin
+                    right: handle.left
+                    rightMargin: Theme.paddingMedium
+                }
+            }
+
+            // Create a visual handle to grab the item, and connect
+            // it to the drag handler of the view and the drag handler
+            // of the delegate.
+            //
+            // This part is already taken care of when using Opal.Delegates.
+            DragHandle {
+                id: handle
+
+                anchors {
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
+                }
+
+                // The delegate needs its own drag handler that is
+                // connected to the outer drag handler of the view.
+                // The delegate drag handler must know the index
+                // of the delegate.
+                moveHandler: DelegateDragHandler {
+                    viewHandler: viewDragHandler
+                    handledItem: delegate
+                    modelIndex: index
+                }
+            }
+        }
+    }
 }
 ```
 
