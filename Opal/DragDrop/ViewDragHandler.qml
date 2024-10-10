@@ -99,7 +99,7 @@ Item {
         if (!flickable || !listView || !_draggedItem) return 0
 
         if (flickable === listView) {
-            return -listView.headerItem.height
+            return !!listView.headerItem ? -listView.headerItem.height : 0
         } else {
             var base = flickable.contentY + listView.mapToItem(flickable, 0, 0).y
             return base - _draggedItem.height * 3 / 2
@@ -111,7 +111,7 @@ Item {
         if (flickable === listView) {
             return   listView.contentHeight
                    - listView.height
-                   - listView.headerItem.height
+                   - (!!listView.headerItem ? listView.headerItem.height : 0)
         } else {
             var base =   flickable.contentY
                        + listView.mapToItem(flickable, 0, 0).y
@@ -167,7 +167,7 @@ Item {
         target: smartScrollbar
         property: "smartWhen"
         value: false
-        when: root.active
+        when: !!flickable && root.active
     }
 
     Transition {

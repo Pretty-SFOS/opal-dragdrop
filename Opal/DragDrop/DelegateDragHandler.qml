@@ -20,10 +20,10 @@ Item {
     property int modelIndex: -1
 
     // public
-    readonly property bool active: !!viewHandler && viewHandler.active
     readonly property bool dragging: !!viewHandler &&
-        viewHandler.active && viewHandler._originalIndex >= 0 ?
-            viewHandler._originalIndex === _originalIndex : false
+        !!viewHandler.listView && viewHandler.active &&
+            viewHandler._originalIndex >= 0 ?
+                viewHandler._originalIndex === _originalIndex : false
 
     // internal
     property int _originalIndex: -1
