@@ -53,11 +53,14 @@ S.Page {
             // because the SilicaListView itself is the main flickable on
             // this page.
             // --- flickable: view
+
+            onItemMoved: S.Notices.show("moving %1 to %2".
+                arg(fromIndex).arg(toIndex), 2000, S.Notice.Top)
         }
 
-        delegate: D.OneLineDelegate {
+        delegate: D.TwoLineDelegate {
             text: name
-            interactive: false
+            description: qsTr("Current index: %1").arg(index)
 
             // Register the drag handler in the delegate.
             dragHandler: viewDragHandler
@@ -70,6 +73,8 @@ S.Page {
                 description: qsTranslate("Delegates", "per kg")
                 alignment: Qt.AlignRight
             }
+
+            onClicked: S.Notices.show(name, 2000, S.Notice.Top)
         }
     }
 }
