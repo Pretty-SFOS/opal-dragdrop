@@ -88,6 +88,7 @@ Item {
     property QtObject smartScrollbar  // optional
     property bool active: !!listView
     property bool handleMove: true
+    property int listViewCacheBuffer: 20 * Screen.height
     property Flickable flickable: !!listView ? listView : null
 
     // internal API
@@ -158,6 +159,12 @@ Item {
 
     onListViewChanged: {
         _setListViewProperties()
+    }
+
+    onListViewCacheBufferChanged: {
+        if (listViewCacheBuffer > 0) {
+            listView.cacheBuffer = listViewCacheBuffer
+        }
     }
 
     implicitWidth: 0
