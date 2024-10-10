@@ -5,6 +5,223 @@
 import QtQuick 2.6
 import Sailfish.Silica 1.0
 
+// Important: both the DragHandle and the DelegateDragHandler
+// are object children of the delegate object, which can be destroyed
+// by the view at any time. This creates numerous weird bugs.
+//
+// The following design decisions should minimize this problem:
+// 1. The delegate position is updated each time handleScrolling()
+//    is called. A itemMoved signal is sent which should be handled by the view.
+// 2. Views should act on itemMoved. If saving is expensive, the updated
+//    order should be saved on itemDropped. However, the actual item should
+//    always be as close as possible to the dragged image.
+// 3. There are no nice movement animations for the dragged image.
+//    Adding those would be too much trouble.
+// 4. A large cacheBuffer value is recommended to hold as many delegates
+//    in memory as possible.
+//
+// It is not worth the effort to design even more workarounds for this
+// memory management issue.
+
+/*!
+    \qmltype DelegateDragHandler
+    \inqmlmodule Opal.DragDrop
+    \inherits Item
+    \brief The inner drag-and-drop handler for list delegates.
+
+    \section2 This component
+
+    This component glues the outer \l ViewDragHandler together with
+    the visual \l DragHandle.
+
+    The visual handle as well as the \l DelegateDragHandler are added
+    automatically when using \c Opal.Delegates. It has to be added
+    manually to custom delegates that are not based on \c PaddedDelegate,
+    like this:
+
+    \qml
+    ListItem {
+        ...
+
+        // This is already take care of when using Opal.Delegates.
+        DragHandle {
+            id: handle
+
+            anchors {
+                right: parent.right
+                rightMargin: Theme.horizontalPageMargin
+            }
+
+            // The delegate needs its own drag handler that is
+            // connected to the outer drag handler of the view.
+            // The delegate drag handler must know the index
+            // of the delegate.
+            moveHandler: DelegateDragHandler {
+                viewHandler: viewDragHandler
+                handledItem: delegate
+                modelIndex: index
+            }
+        }
+    }
+    \endqml
+
+    Read on for a complete example.
+
+    \section2 Drag and Drop
+
+    This module add support for drag-and-drop ordering to QML list views.
+
+    \b Prerequisites: your model must support moving items, either through
+    the \c move method or via another manually defined route. Qt's
+    \c ListModel implements the \c move method.
+
+    This module only provides the visual part (i.e. the actual dragging
+    and dropping of list elements) but not the backend part.
+
+    \b Limitations: this module only works with \c ListView based views,
+    that are optionally inside of a \c Flickable. Both \c SilicaListView
+    and \c SilicaFlickable are supported.
+
+    \section3 Architecture
+
+    The module has three components:
+
+    1. the outer \l ViewDragHandler that has to be defined as a child of
+    the list view.
+
+    2. the inner \l DelegateDragHandler that has to be defined on the delegate.
+
+    3. the \l DragHandle that has to be placed in the delegate and is
+    the only visual component.
+
+    \section3 Usage
+
+    It is recommended to use this module in combination with the \c Opal.Delegates
+    module, which has built-in support for this module.
+
+    \section4 With \c Opal.Delegates
+
+    You only have to define a \l ViewDragHandler and hook it into the
+    delegate when using delegates built with \c Opal.Delegates.
+
+    \qml
+    import QtQuick 2.0
+    import Sailfish.Silica 1.0
+    import Opal.Delegates 1.0
+    import Opal.DragDrop 1.0
+
+    Page {
+        id: root
+        allowedOrientations: Orientation.All
+
+        ListModel {
+            id: myModel
+            ListElement { name: "Jane" }
+            ListElement { name: "John" }
+            ListElement { name: "Judy" }
+        }
+
+        SilicaListView {
+            id: view
+            model: myModel
+            anchors.fill: parent
+            header: PageHeader { title: "People" }
+            VerticalScrollDecorator {}
+
+            ViewDragHandler {
+                id: viewDragHandler
+                listView: view
+            }
+
+            delegate: OneLineDelegate {
+                text: name
+                dragHandler: viewDragHandler
+            }
+        }
+    }
+    \endqml
+
+    \section4 With custom delegates
+
+    When using custom delegates, you have to define an outer \l ViewDragHandler
+    on the view and place a \l DragHandle in the delegate. The \l DragHandle
+    defines a \l DelegateDragHandler.
+
+    \qml
+    import QtQuick 2.0
+    import Sailfish.Silica 1.0
+    import Opal.Delegates 1.0
+    import Opal.DragDrop 1.0
+
+    Page {
+        id: root
+        allowedOrientations: Orientation.All
+
+        ListModel {
+            id: myModel
+            ListElement { name: "Jane" }
+            ListElement { name: "John" }
+            ListElement { name: "Judy" }
+        }
+
+        SilicaListView {
+            id: view
+            model: myModel
+            anchors.fill: parent
+            header: PageHeader { title: "People" }
+            VerticalScrollDecorator {}
+
+            ViewDragHandler {
+                id: viewDragHandler
+                listView: view
+            }
+
+            delegate: ListItem {
+                id: delegate
+                contentHeight: Theme.itemSizeSmall
+
+                Label {
+                    text: name
+                    truncationMode: TruncationMode.Fade
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                        leftMargin: Theme.horizontalPageMargin
+                        right: handle.left
+                        rightMargin: Theme.paddingMedium
+                    }
+                }
+
+                // Create a visual handle to grab the item, and connect
+                // it to the drag handler of the view and the drag handler
+                // of the delegate.
+                //
+                // This part is already taken care of when using Opal.Delegates.
+                DragHandle {
+                    id: handle
+
+                    anchors {
+                        right: parent.right
+                        rightMargin: Theme.horizontalPageMargin
+                    }
+
+                    // The delegate needs its own drag handler that is
+                    // connected to the outer drag handler of the view.
+                    // The delegate drag handler must know the index
+                    // of the delegate.
+                    moveHandler: DelegateDragHandler {
+                        viewHandler: viewDragHandler
+                        handledItem: delegate
+                        modelIndex: index
+                    }
+                }
+            }
+        }
+    }
+    \endqml
+
+    \sa DragHandle, ViewDragHandler, DelegateDragHandler
+*/
 Item {
     id: root
 
@@ -14,12 +231,47 @@ Item {
     // necessary to allow mixing objects created through importing
     // the module via its path and via the dot notation. QML treats
     // those objects as different types even though they are the same.
+
+    /*!
+      This property holds the \l ViewDragHandler that handles drags on this list.
+
+      The \l ViewDragHandler must be defined outside of the delegate
+      as a direct child of the list view. Assign its \c id to this property.
+
+      \note the assigned value must be of type \c ViewDragHandler, even
+      though the property is declared as \c QtObject.
+
+      \sa ViewDragHandler
+    */
     property QtObject /*ViewDragHandler*/ viewHandler
 
+    /*!
+      This property holds the delegate that is being handled.
+
+      Assign the \c id of the \c ListItem to this property.
+    */
     property Item handledItem
+
+    /*!
+      This property holds the index of the handled item.
+
+      Assign the index of the delegate to this property.
+      It is usually the \c index property, or it can be accessed
+      through \c model.index or \c modelData.index.
+
+      \defaultValue -1
+    */
     property int modelIndex: -1
 
-    // public
+    /*!
+      This property shows whether the \l ViewDragHandler is active.
+    */
+    readonly property bool active: !!viewHandler &&
+        !!viewHandler.listView && viewHandler.active
+
+    /*!
+      This property shows whether the item is currently being dragged.
+    */
     readonly property bool dragging: !!viewHandler &&
         !!viewHandler.listView && viewHandler.active &&
             viewHandler._originalIndex >= 0 ?
