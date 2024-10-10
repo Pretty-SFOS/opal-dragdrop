@@ -35,8 +35,8 @@ S.Page {
 
             S.TextSwitch {
                 id: dragMode
-                text: qsTranslate("DragDrop", "Enable drag and drop")
-                description: qsTranslate("DragDrop", "Toggle this switch to see " +
+                text: qsTr("Enable drag and drop")
+                description: qsTr("Toggle this switch to see " +
                                          "how components react.")
                 checked: true
             }
@@ -49,7 +49,7 @@ S.Page {
             }
 
             S.SectionHeader {
-                text: qsTranslate("DragDrop", "Views using “Opal.Delegates”")
+                text: qsTr("Views using “Opal.Delegates”")
             }
 
             GalleryLabel {
@@ -89,14 +89,14 @@ S.Page {
                     }
                     rightItem: D.DelegateInfoItem {
                         text: price
-                        description: qsTranslate("Delegates", "per kg")
+                        description: qsTr("per kg")
                         alignment: Qt.AlignRight
                     }
                 }
             }
 
             S.SectionHeader {
-                text: qsTranslate("DragDrop", "Custom views")
+                text: qsTr("Custom views")
             }
 
             GalleryLabel {
@@ -163,7 +163,7 @@ S.Page {
             }
 
             S.SectionHeader {
-                text: qsTranslate("DragDrop", "Long views")
+                text: qsTr("Long views")
             }
 
             GalleryLabel {
@@ -204,7 +204,7 @@ S.Page {
                     }
                     rightItem: D.DelegateInfoItem {
                         text: price
-                        description: qsTranslate("Delegates", "per kg")
+                        description: qsTr("per kg")
                         alignment: Qt.AlignRight
                     }
                 }

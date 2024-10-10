@@ -36,7 +36,7 @@ S.Page {
 
         S.PullDownMenu {
             M.MenuSwitch {
-                text: qsTranslate("DragDrop", "Enable drag and drop")
+                text: qsTr("Enable drag and drop")
                 checked: dragMode
                 automaticCheck: false
                 onClicked: dragMode = !dragMode
@@ -70,7 +70,7 @@ S.Page {
             }
             rightItem: D.DelegateInfoItem {
                 text: price
-                description: qsTranslate("Delegates", "per kg")
+                description: qsTr("per kg")
                 alignment: Qt.AlignRight
             }
 
