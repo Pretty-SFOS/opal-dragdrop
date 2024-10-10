@@ -122,12 +122,12 @@ Item {
                 viewHandler._scrollDown()
             } else {
                 viewHandler._stopScrolling()
+            }
 
-                var i = _findTargetIndex()
-                if (i >= 0 && i !== root.modelIndex) {
-                    console.log("MOVE", root.modelIndex, "TO", i)
-                    viewHandler.itemMoved(modelIndex, i)
-                }
+            var i = _findTargetIndex()
+            if (i >= 0 && i !== root.modelIndex) {
+                console.log("[DelegateDragHandler] move", root.modelIndex, "to", i)
+                viewHandler.itemMoved(modelIndex, i)
             }
         }
     }
@@ -153,10 +153,10 @@ Item {
         visible: !!source.toString()
         onYChanged: handleScrolling()
 
-//        Connections {
-//            target: root.dragging ? _flickable : null
-//            onContentYChanged: handleScrolling()
-//        }
+        Connections {
+            target: root.dragging ? _flickable : null
+            onContentYChanged: handleScrolling()
+        }
 
         Rectangle {
             z: -100
