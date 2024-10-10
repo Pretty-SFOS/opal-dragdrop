@@ -175,7 +175,7 @@ Item {
 
         NumberAnimation {
             properties: "x,y"
-            duration: 50
+            duration: 200
             easing.type: Easing.InOutQuad
         }
     }
