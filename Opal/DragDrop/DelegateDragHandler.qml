@@ -406,7 +406,7 @@ Item {
         onYChanged: handleScrolling()
 
         Connections {
-            target: root.dragging ? _flickable : null
+            target: root.dragging && _flickable === _listView ? _flickable : null
             onContentYChanged: handleScrolling()
         }
 

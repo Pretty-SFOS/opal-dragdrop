@@ -357,7 +357,7 @@ Item {
                        + listView.height
                        - flickable.height
             return Math.min(
-                base + _draggedItem.height /** 3 / 2*/,
+                base + _draggedItem.height,
                 flickable.contentHeight)
         }
     }
@@ -434,7 +434,10 @@ Item {
 
             if (flickable.contentY > _minimumFlickableY) {
                 flickable.contentY -= 15
-                // _draggedItem.y -= 5
+
+                if (flickable !== listView) {
+                    _draggedItem.y -= 15
+                }
             } else {
                 stop()
                 // flickable.contentY = 0
@@ -455,7 +458,10 @@ Item {
 
             if (flickable.contentY < _maximumFlickableY) {
                 flickable.contentY += 15
-                // _draggedItem.y += 5
+
+                if (flickable !== listView) {
+                    _draggedItem.y += 15
+                }
             } else {
                 stop()
                 // flickable.contentY = _maximumFlickableY
