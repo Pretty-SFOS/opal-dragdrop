@@ -93,6 +93,7 @@ Item {
     // internal API
     property Item _draggedItem
     property int _originalIndex: -1
+    readonly property bool _scrolling: scrollUpTimer.running || scrollDownTimer.running
 
     readonly property int _minimumFlickableY: {
         if (!flickable || !listView || !_draggedItem) return 0
@@ -182,7 +183,7 @@ Item {
     Timer {
         id: scrollUpTimer
         repeat: true
-        interval: 1
+        interval: 10
         onTriggered: {
             if (!_draggedItem) {
                 stop()
@@ -190,7 +191,7 @@ Item {
             }
 
             if (flickable.contentY > _minimumFlickableY) {
-                flickable.contentY -= 5
+                flickable.contentY -= 15
                 // _draggedItem.y -= 5
             } else {
                 stop()
@@ -203,7 +204,7 @@ Item {
     Timer {
         id: scrollDownTimer
         repeat: true
-        interval: 1
+        interval: 10
         onTriggered: {
             if (!_draggedItem) {
                 stop()
@@ -211,7 +212,7 @@ Item {
             }
 
             if (flickable.contentY < _maximumFlickableY) {
-                flickable.contentY += 5
+                flickable.contentY += 15
                 // _draggedItem.y += 5
             } else {
                 stop()
