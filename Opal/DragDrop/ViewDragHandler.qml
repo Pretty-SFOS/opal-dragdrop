@@ -91,9 +91,8 @@ Item {
     property Flickable flickable: !!listView ? listView : null
 
     // internal API
-    property Item _dragItem
     property Item _draggedItem
-    property int _dragIndex: -1
+    property int _originalIndex: -1
 
     readonly property int _minimumFlickableY: {
         if (!flickable || !listView || !_draggedItem) return 0
@@ -128,8 +127,8 @@ Item {
     readonly property bool __opal_view_drag_handler: true
 
     // public
-    signal itemMoved(var item, var fromIndex, var toIndex)
-    signal itemDropped(var item, var originalIndex, var currentIndex, var finalIndex)
+    signal itemMoved(var fromIndex, var toIndex)
+    signal itemDropped(var originalIndex, var currentIndex, var finalIndex)
 
     function _scrollUp() {
         scrollUpTimer.start()

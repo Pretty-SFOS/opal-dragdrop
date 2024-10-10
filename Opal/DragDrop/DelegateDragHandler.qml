@@ -21,10 +21,12 @@ Item {
 
     // public
     readonly property bool active: !!viewHandler && viewHandler.active
-    readonly property bool dragging: !!viewHandler && viewHandler.active ?
-        viewHandler._dragItem === handledItem : false
+    readonly property bool dragging: !!viewHandler &&
+        viewHandler.active && viewHandler._originalIndex >= 0 ?
+            viewHandler._originalIndex === _originalIndex : false
 
     // internal
+    property int _originalIndex: -1
     property alias _draggableItem: _draggableItem
     property double _previousOpacity: 1.0
 
@@ -65,12 +67,14 @@ Item {
 
         _previousOpacity = handledItem.opacity
         _draggableItem.source = ''
+        _draggableItem.width = handledItem.width
+        _draggableItem.height = handledItem.height
 
         handledItem.grabToImage(function(result) {
             _draggableItem.source = result.url
+            root._originalIndex = modelIndex
             viewHandler._draggedItem = _draggableItem
-            viewHandler._dragItem = handledItem
-            viewHandler._dragIndex = modelIndex
+            viewHandler._originalIndex = modelIndex
         }, Qt.size(handledItem.width,
                    handledItem.height))
     }
@@ -81,23 +85,28 @@ Item {
 
             if (finalIndex >= 0) {
                 if (finalIndex !== modelIndex) {
-                    viewHandler.itemMoved(handledItem, modelIndex, finalIndex)
+                    viewHandler.itemMoved(modelIndex, finalIndex)
                 }
 
-                if (finalIndex !== viewHandler._dragIndex) {
-                    viewHandler.itemDropped(handledItem, viewHandler._dragIndex, modelIndex, finalIndex)
+                if (finalIndex !== viewHandler._originalIndex) {
+                    viewHandler.itemDropped(viewHandler._originalIndex, modelIndex, finalIndex)
                 }
             }
 
             console.log("stopped at", finalIndex,
-                        "| moved from", viewHandler._dragIndex,
+                        "| moved from", viewHandler._originalIndex,
                         "via", modelIndex, "to", finalIndex)
 
-            handledItem.opacity = _previousOpacity
+            if (!!handledItem) {
+                // the delegate may have been destroyed because it was
+                // scrolled out of the visible area
+                handledItem.opacity = _previousOpacity
+            }
+
             viewHandler._draggedItem = null
-            viewHandler._dragItem = null
-            viewHandler._dragIndex = -1
             _draggableItem.source = ''
+            viewHandler._originalIndex = -1
+            root._originalIndex = -1
         }
     }
 
@@ -117,14 +126,16 @@ Item {
                 var i = _findTargetIndex()
                 if (i >= 0 && i !== root.modelIndex) {
                     console.log("MOVE", root.modelIndex, "TO", i)
-                    viewHandler.itemMoved(handledItem, modelIndex, i)
+                    viewHandler.itemMoved(modelIndex, i)
                 }
             }
         }
     }
 
     ListView.onRemove: {
-        animateRemoval(handledItem)
+        if (!!handledItem) {
+            animateRemoval(handledItem)
+        }
     }
 
     Binding {
