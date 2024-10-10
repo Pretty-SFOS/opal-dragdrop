@@ -93,7 +93,7 @@ Item {
                 }
             }
 
-            console.log("stopped at", finalIndex,
+            console.log("[DelegateDragHandler] stopped at", finalIndex,
                         "| moved from", viewHandler._originalIndex,
                         "via", modelIndex, "to", finalIndex)
 
@@ -104,9 +104,9 @@ Item {
             }
 
             viewHandler._draggedItem = null
-            _draggableItem.source = ''
             viewHandler._originalIndex = -1
             root._originalIndex = -1
+            _draggableItem.source = ''
         }
     }
 
@@ -169,12 +169,32 @@ Item {
         states: [
             State {
                 name: "normal"
-                when: !root.dragging
+                when: !root.dragging && !!handledItem
                 ParentChange {
                     target: _draggableItem
                     parent: handledItem.contentItem
                     rotation: 0
                     y: 0
+                }
+                PropertyChanges {
+                    target: _draggableItem
+                    opacity: 0.0
+                }
+            },
+            State {
+                name: "normalReset"
+                when: !root.dragging && !handledItem
+                ParentChange {
+                    target: _draggableItem
+                    parent: root
+                    rotation: 0
+                    y: 0
+                }
+                PropertyChanges {
+                    target: _draggableItem
+                    source: ''
+                    width: 0
+                    height: 0
                 }
             },
             State {
@@ -185,6 +205,10 @@ Item {
                     parent: _listView
                     rotation: 0
                     y: _draggableItem.mapToItem(_listView, 0, 0).y
+                }
+                PropertyChanges {
+                    target: _draggableItem
+                    opacity: 1.0
                 }
             }
         ]
