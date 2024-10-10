@@ -5,6 +5,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0 as S
+import Opal.Gallery 1.0
 import Opal.Delegates 1.0 as D
 import Opal.MenuSwitch 1.0 as M
 import Opal.DragDrop 1.0
@@ -57,7 +58,7 @@ S.Page {
             }
 
             S.SilicaListView {
-                model: FruitModel {}
+                model: GalleryFruitModel {}
                 width: parent.width
                 contentHeight: model.count * S.Theme.itemSizeSmall
                 height: contentHeight
@@ -104,7 +105,7 @@ S.Page {
             }
 
             S.SilicaListView {
-                model: ChatModel {}
+                model: GalleryChatModel {}
                 width: parent.width
                 contentHeight: model.count * S.Theme.itemSizeSmall
                 height: contentHeight
@@ -172,7 +173,7 @@ S.Page {
             }
 
             S.SilicaListView {
-                model: LongFruitModel {}
+                model: GalleryLongFruitModel {}
                 width: parent.width
                 contentHeight: model.count * S.Theme.itemSizeSmall
                 height: contentHeight
