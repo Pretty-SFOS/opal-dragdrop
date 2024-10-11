@@ -11,6 +11,7 @@ Files: doc/screenshot-*.webp
 Copyright: Screenshot Author
 License: CC-BY-SA-4.0
 
-Files: icon-src/drag-handle.svg Opal/DragDrop/private/icons/drag-handle.png
+Files: icon-src/drag-handle.svg
 Copyright: Mirian Margiani
 License: CC-BY-SA-4.0
+Comment: source file for Opal/DragDrop/private/icons/drag-handle.png
