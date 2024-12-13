@@ -43,7 +43,7 @@ import Sailfish.Silica 1.0
     ListItem {
         ...
 
-        // This is already take care of when using Opal.Delegates.
+        // This is already taken care of when using Opal.Delegates.
         DragHandle {
             id: handle
 
