@@ -397,7 +397,9 @@ Item {
     }
 
     onListViewCacheBufferChanged: {
-        if (listViewCacheBuffer > 0) {
+        if (!!listView
+                && listView.hasOwnProperty('cacheBuffer')
+                && listViewCacheBuffer > 0) {
             listView.cacheBuffer = listViewCacheBuffer
         }
     }
