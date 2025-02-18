@@ -1,9 +1,13 @@
 <!--
-SPDX-FileCopyrightText: 2023-2024 Mirian Margiani
+SPDX-FileCopyrightText: 2023-2025 Mirian Margiani
 SPDX-License-Identifier: GFDL-1.3-or-later
 -->
 
 # Changelog
+
+## 1.0.2 (2025-02-18)
+
+- Fix warning when list view doesn't support `cacheBuffer`
 
 ## 1.0.1 (2024-10-11)
 
