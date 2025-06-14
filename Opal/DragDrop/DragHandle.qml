@@ -217,7 +217,7 @@ import Sailfish.Silica 1.0
 
     \sa DragHandle, ViewDragHandler, DelegateDragHandler
 */
-SilicaItem {
+Item {
     id: root
 
     /*!
