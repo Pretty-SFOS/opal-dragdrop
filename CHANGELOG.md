@@ -5,6 +5,10 @@ SPDX-License-Identifier: GFDL-1.3-or-later
 
 # Changelog
 
+## 1.0.3 (2025-06-17)
+
+- Don't inherit grab handle highlighted state from parent
+
 ## 1.0.2 (2025-02-18)
 
 - Fix warning when list view doesn't support `cacheBuffer`
