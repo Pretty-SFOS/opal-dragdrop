@@ -284,6 +284,15 @@ Item {
     */
     property bool showActiveArea: false
 
+    /*!
+      This property defines whether the drag handle icon is highlighted.
+
+      This value is not inherited from the parent item. If the drag handle
+      should be highlighted whent he parent is highlighted, you must create a
+      manual binding.
+    */
+    property bool highlighted: false
+
     visible: !!moveHandler && moveHandler.active
     implicitWidth: visible ? Theme.itemSizeMedium : 0
     implicitHeight: visible ? Theme.itemSizeSmall - 2*Theme.paddingMedium : 0
