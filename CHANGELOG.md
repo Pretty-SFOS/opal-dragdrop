@@ -5,6 +5,12 @@ SPDX-License-Identifier: GFDL-1.3-or-later
 
 # Changelog
 
+## 1.0.4 (2025-06-29)
+
+- Fix missing "highlighted" property in `DragHandle`
+  This made it impossible to highlight the grab handle, and it was causing
+  issues down the line in `Opal.Delegates`.
+
 ## 1.0.3 (2025-06-17)
 
 - Don't inherit grab handle highlighted state from parent
