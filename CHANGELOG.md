@@ -5,6 +5,11 @@ SPDX-License-Identifier: GFDL-1.3-or-later
 
 # Changelog
 
+## 1.0.5 (2025-12-21)
+
+- Updated packaging to be easier to integrate into new projects
+- Fixed drag handle anchor warnings if parent is undefined
+
 ## 1.0.4 (2025-06-29)
 
 - Fix missing "highlighted" property in `DragHandle`
